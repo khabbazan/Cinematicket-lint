@@ -12,7 +12,7 @@ self-evident from syntax alone:
 import ast
 from pathlib import Path
 
-from cinematicket_linter.violations import Violation
+from cinematicket_lint.violations import Violation
 
 CODE = 'CT02'
 

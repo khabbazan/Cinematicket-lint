@@ -1,4 +1,4 @@
-# CinemaTicket-linter
+# CinemaTicket-lint
 
 A [pre-commit](https://pre-commit.com) hook with AST-based checks for code-style rules that [ruff](https://docs.astral.sh/ruff/) and [pylint](https://pylint.readthedocs.io/) can't express. Seven checks, `CT01`–`CT07`.
 
@@ -8,8 +8,8 @@ Add to your project's `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
-  - repo: https://github.com/khabbazan/CinemaTicket-linter
-    rev: v0.2.0
+  - repo: https://github.com/khabbazan/CinemaTicket-lint
+    rev: v0.3.0
     hooks:
       - id: cinematicket-lint
 ```
@@ -28,16 +28,16 @@ repos:
 
 ## Suppressing a check
 
-Add `# ctlinter: CTXX` as a trailing comment on the violating line (multiple codes may be comma-separated):
+Add `# ctlint: CTXX` as a trailing comment on the violating line (multiple codes may be comma-separated):
 
 ```python
-value = compute()  # ctlinter: CT02
+value = compute()  # ctlint: CT02
 ```
 
 Or on the file's first line to suppress that check for the whole file:
 
 ```python
-# ctlinter: CT02
+# ctlint: CT02
 """Module docstring."""
 ```
 

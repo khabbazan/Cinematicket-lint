@@ -8,15 +8,15 @@ import ast
 import sys
 from pathlib import Path
 
-from cinematicket_linter import (
+from cinematicket_lint import (
     check_backslash_continuation,
     check_openapi_schema,
     check_optional_default,
     check_test_prefix,
     check_variable_annotation,
 )
-from cinematicket_linter.suppressions import filter_suppressed
-from cinematicket_linter.violations import Violation
+from cinematicket_lint.suppressions import filter_suppressed
+from cinematicket_lint.violations import Violation
 
 
 def main() -> int:

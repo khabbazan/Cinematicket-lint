@@ -11,7 +11,7 @@ every schema/parameter call regardless of variable name.
 import ast
 from pathlib import Path
 
-from cinematicket_linter.violations import Violation
+from cinematicket_lint.violations import Violation
 
 CODE_MISSING_EXAMPLE = 'CT04'
 CODE_MISSING_DESCRIPTION = 'CT05'

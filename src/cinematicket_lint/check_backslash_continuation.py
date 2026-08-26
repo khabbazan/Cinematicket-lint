@@ -9,7 +9,7 @@ pylint check, so this fills that gap.
 import tokenize
 from pathlib import Path
 
-from cinematicket_linter.violations import Violation
+from cinematicket_lint.violations import Violation
 
 CODE = 'CT01'
 

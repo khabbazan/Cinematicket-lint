@@ -1,13 +1,13 @@
 [project]
-name = "cinematicket-linter"
-version = "0.1.0"
+name = "cinematicket-lint"
+version = "0.3.0"
 description = "Pre-commit checks (CT01-CT07) for code-style rules ruff and pylint cannot express"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 
 [project.scripts]
-cinematicket-lint = "cinematicket_linter.cli:main"
+cinematicket-lint = "cinematicket_lint.cli:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]
