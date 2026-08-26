@@ -1,7 +1,8 @@
 """Suppression handling for custom_lint violations.
 
-A violation is suppressed by a trailing ``# CTXX`` comment on its own
-line, or file-wide by a ``# CTXX`` comment on the file's first line.
+A violation is suppressed by a trailing ``# ctlinter: CTXX`` comment on
+its own line, or file-wide by a ``# ctlinter: CTXX`` comment on the
+file's first line. Multiple codes may be comma-separated.
 """
 
 import re
@@ -10,6 +11,7 @@ from pathlib import Path
 
 from cinematicket_linter.violations import Violation
 
+_DIRECTIVE_PATTERN = re.compile(r'ctlinter:\s*(CT\d+(?:\s*,\s*CT\d+)*)')
 _CODE_PATTERN = re.compile(r'CT\d+')
 
 
@@ -30,8 +32,10 @@ def _collect_suppression_codes(path: Path) -> tuple[set[str], dict[int, set[str]
         for token in tokenize.tokenize(source_file.readline):
             if token.type != tokenize.COMMENT:
                 continue
-            codes = set(_CODE_PATTERN.findall(token.string))
-            if codes:
-                line_codes.setdefault(token.start[0], set()).update(codes)
+            directive_match = _DIRECTIVE_PATTERN.search(token.string)
+            if directive_match is None:
+                continue
+            codes = set(_CODE_PATTERN.findall(directive_match.group(1)))
+            line_codes.setdefault(token.start[0], set()).update(codes)
     file_wide_codes = line_codes.get(1, set())
     return file_wide_codes, line_codes

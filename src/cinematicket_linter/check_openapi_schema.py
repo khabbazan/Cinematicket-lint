@@ -2,7 +2,10 @@
 description ending with a period.
 
 Scoped to this project's actual drf-yasg usage: openapi.Schema(...) and
-openapi.Parameter(...) calls.
+openapi.Parameter(...) calls. The example= requirement applies only to
+response schemas, identified by the word RESPONSE (case-insensitive) in
+the variable name they're assigned to. description= is required on
+every schema/parameter call regardless of variable name.
 """
 
 import ast
@@ -21,12 +24,28 @@ def check(path: Path, tree: ast.Module) -> list[Violation]:
     if not _imports_drf_yasg_openapi(tree):
         return []
 
+    response_call_ids = _response_schema_call_ids(tree)
+
     violations: list[Violation] = []
     for call_node in ast.walk(tree):
         if not isinstance(call_node, ast.Call) or not _is_openapi_schema_call(call_node):
             continue
-        violations.extend(_check_call(path, call_node))
+        require_example = id(call_node) in response_call_ids
+        violations.extend(_check_call(path, call_node, require_example))
     return violations
+
+
+def _response_schema_call_ids(tree: ast.Module) -> set[int]:
+    response_call_ids: set[int] = set()
+    for assign_node in ast.walk(tree):
+        if not isinstance(assign_node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and 'RESPONSE' in target.id.upper() for target in assign_node.targets):
+            continue
+        for call_node in ast.walk(assign_node.value):
+            if isinstance(call_node, ast.Call) and _is_openapi_schema_call(call_node):
+                response_call_ids.add(id(call_node))
+    return response_call_ids
 
 
 def _imports_drf_yasg_openapi(tree: ast.Module) -> bool:
@@ -44,12 +63,12 @@ def _is_openapi_schema_call(call_node: ast.Call) -> bool:
     return isinstance(callee.value, ast.Name) and callee.value.id == 'openapi'
 
 
-def _check_call(path: Path, call_node: ast.Call) -> list[Violation]:
+def _check_call(path: Path, call_node: ast.Call, require_example: bool) -> list[Violation]:
     violations: list[Violation] = []
     description_keyword = _find_keyword(call_node, 'description')
     example_keyword = _find_keyword(call_node, 'example')
 
-    if example_keyword is None:
+    if require_example and example_keyword is None:
         violations.append(
             Violation(path=str(path), line=call_node.lineno, code=CODE_MISSING_EXAMPLE, message='missing example=')
         )

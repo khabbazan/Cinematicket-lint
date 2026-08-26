@@ -9,7 +9,7 @@ Add to your project's `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/khabbazan/CinemaTicket-linter
-    rev: v0.1.0
+    rev: v0.2.0
     hooks:
       - id: cinematicket-lint
 ```
@@ -21,23 +21,23 @@ repos:
 | `CT01` | Backslash line continuation outside brackets (e.g. `total = 1 + \`). Complements ruff's `E502`, which only flags a *redundant* backslash inside an already-open bracket. |
 | `CT02` | A local variable assigned without a type annotation, where the right-hand side is neither a class constructor call (`SomeClass(...)`, PascalCase target) nor a literal data-type initialization (`()`, `[]`, `''`, `""`, `{}`, a set literal, an f-string, or a number/bool/`None` constant). |
 | `CT03` | A pydantic `BaseModel` / `@dataclass` field typed `Optional[X]` or `X \| None` with no default value. |
-| `CT04` | A `drf_yasg` `openapi.Schema(...)` / `openapi.Parameter(...)` call missing `example=`. |
-| `CT05` | Same call, missing `description=`. |
+| `CT04` | A `drf_yasg` `openapi.Schema(...)` / `openapi.Parameter(...)` call assigned to a variable with `RESPONSE` (case-insensitive) in its name, missing `example=`. Request/other schemas are not required to have one. |
+| `CT05` | Any `openapi.Schema(...)` / `openapi.Parameter(...)` call, regardless of variable name, missing `description=`. |
 | `CT06` | Same call, `description=` present but doesn't end with a period. |
 | `CT07` | In `test_*.py` files, a `def test_*` function whose name doesn't match `test_(success\|failure)_`. |
 
 ## Suppressing a check
 
-Add `# CTXX` as a trailing comment on the violating line:
+Add `# ctlinter: CTXX` as a trailing comment on the violating line (multiple codes may be comma-separated):
 
 ```python
-value = compute()  # CT02
+value = compute()  # ctlinter: CT02
 ```
 
 Or on the file's first line to suppress that check for the whole file:
 
 ```python
-# CT02
+# ctlinter: CT02
 """Module docstring."""
 ```
 
