@@ -9,10 +9,21 @@ Add to your project's `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/khabbazan/CinemaTicket-lint
-    rev: v0.3.0
+    rev: v0.4.0
     hooks:
       - id: cinematicket-lint
 ```
+
+## Scoping to directories
+
+Add a `[tool.cinematicket_lint]` table to your project's `pyproject.toml` — same file, same idea as `[tool.ruff]`'s `exclude` and `[tool.pylint.MASTER]`'s `ignore`:
+
+```toml
+[tool.cinematicket_lint]
+exclude = ["migrations", "lint_eval_tmp"]
+```
+
+Entries are plain directory/file names, not glob patterns — a name matches if it appears as a path component anywhere in a checked file's path (so `"migrations"` skips `any/app/migrations/0001_initial.py`). `cinematicket-lint` looks for `pyproject.toml` starting from the current working directory and walking up. With no config found (or no `[tool.cinematicket_lint]` table), nothing is excluded.
 
 ## Checks
 

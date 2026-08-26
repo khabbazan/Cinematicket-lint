@@ -1,9 +1,9 @@
 [project]
 name = "cinematicket-lint"
-version = "0.3.0"
+version = "0.4.0"
 description = "Pre-commit checks (CT01-CT07) for code-style rules ruff and pylint cannot express"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 
 [project.scripts]
@@ -18,7 +18,7 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "Q", "ANN"]
