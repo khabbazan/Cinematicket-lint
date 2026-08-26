@@ -15,17 +15,18 @@ from cinematicket_lint import (
     check_test_prefix,
     check_variable_annotation,
 )
-from cinematicket_lint.config import is_excluded, load_exclude_names
+from cinematicket_lint.config import discover_files, is_excluded, load_exclude_names
 from cinematicket_lint.suppressions import filter_suppressed
 from cinematicket_lint.violations import Violation
 
 
 def main() -> int:
-    file_arguments = sys.argv[1:]
     exclude_names = load_exclude_names(Path.cwd())
+    file_arguments = sys.argv[1:]
+    paths = [Path(file_argument) for file_argument in file_arguments] if file_arguments else discover_files(Path.cwd())
+
     all_violations: list[Violation] = []
-    for file_argument in file_arguments:
-        path = Path(file_argument)
+    for path in paths:
         if is_excluded(path, exclude_names):
             continue
         all_violations.extend(_check_file(path))

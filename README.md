@@ -9,7 +9,7 @@ Add to your project's `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/khabbazan/CinemaTicket-lint
-    rev: v0.4.0
+    rev: v0.5.0
     hooks:
       - id: cinematicket-lint
 ```
@@ -20,10 +20,15 @@ Add a `[tool.cinematicket_lint]` table to your project's `pyproject.toml` — sa
 
 ```toml
 [tool.cinematicket_lint]
+include = ["advertising", "advertising_core"]
 exclude = ["migrations", "lint_eval_tmp"]
 ```
 
-Entries are plain directory/file names, not glob patterns — a name matches if it appears as a path component anywhere in a checked file's path (so `"migrations"` skips `any/app/migrations/0001_initial.py`). `cinematicket-lint` looks for `pyproject.toml` starting from the current working directory and walking up. With no config found (or no `[tool.cinematicket_lint]` table), nothing is excluded.
+`exclude` entries are plain directory/file names, not glob patterns — a name matches if it appears as a path component anywhere in a checked file's path (so `"migrations"` skips `any/app/migrations/0001_initial.py`).
+
+`include` entries are directories, relative to the `pyproject.toml` location, that get walked for every `.py` file **when the CLI is invoked with no file arguments** — e.g. `cinematicket-lint` on its own in a CI job, instead of `find advertising/ -name '*.py' | xargs cinematicket-lint`. `include` has no effect when file paths are passed on the command line (that's how pre-commit invokes the hook, so its behavior is unchanged).
+
+`cinematicket-lint` looks for `pyproject.toml` starting from the current working directory and walking up. With no config found (or no `[tool.cinematicket_lint]` table), nothing is excluded and, with no file arguments, nothing is discovered either.
 
 ## Checks
 
