@@ -1,6 +1,6 @@
 # CinemaTicket-lint
 
-A [pre-commit](https://pre-commit.com) hook with AST-based checks for code-style rules that [ruff](https://docs.astral.sh/ruff/) and [pylint](https://pylint.readthedocs.io/) can't express. Seven checks, `CT01`–`CT07`.
+A [pre-commit](https://pre-commit.com) hook with AST-based checks for code-style rules that [ruff](https://docs.astral.sh/ruff/) and [pylint](https://pylint.readthedocs.io/) can't express. Nine checks, `CT01`–`CT09`.
 
 ## Usage
 
@@ -9,7 +9,7 @@ Add to your project's `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/khabbazan/CinemaTicket-lint
-    rev: v0.6.0
+    rev: v0.7.0
     hooks:
       - id: cinematicket-lint
 ```
@@ -41,6 +41,8 @@ exclude = ["migrations", "lint_eval_tmp"]
 | `CT05` | Any `openapi.Schema(...)` / `openapi.Parameter(...)` call, regardless of variable name, missing `description=`. |
 | `CT06` | Same call, `description=` present but doesn't end with a period. |
 | `CT07` | In `test_*.py` files, a `def test_*` function whose name isn't `test_success`, `test_failure`, or one of those with a `_...` suffix. |
+| `CT08` | A function/method parameter (positional, keyword-only, `*args`, `**kwargs`) with no type annotation. `self` and `cls` are exempt. |
+| `CT09` | A function/method with no return-type annotation. Exempt: `test_success[_...]` / `test_failure[_...]` functions, and dunder methods (`__init__`, `__str__`, ...). |
 
 ## Suppressing a check
 

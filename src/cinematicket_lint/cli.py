@@ -12,6 +12,8 @@ from cinematicket_lint import (
     check_backslash_continuation,
     check_openapi_schema,
     check_optional_default,
+    check_parameter_annotation,
+    check_return_annotation,
     check_test_prefix,
     check_variable_annotation,
 )
@@ -52,6 +54,8 @@ def _check_file(path: Path) -> list[Violation]:
     violations.extend(check_optional_default.check(path, tree))
     violations.extend(check_openapi_schema.check(path, tree))
     violations.extend(check_test_prefix.check(path, tree))
+    violations.extend(check_parameter_annotation.check(path, tree))
+    violations.extend(check_return_annotation.check(path, tree))
     return filter_suppressed(path, violations)
 
 
