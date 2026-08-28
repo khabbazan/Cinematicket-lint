@@ -1,4 +1,4 @@
-"""Doc rule 5.5: test functions start with test_success_ or test_failure_."""
+"""Doc rule 5.5: test functions are named test_success[_...] or test_failure[_...]."""
 
 import ast
 import re
@@ -8,7 +8,7 @@ from cinematicket_lint.violations import Violation
 
 CODE = 'CT07'
 
-_VALID_TEST_NAME = re.compile(r'^test_(success|failure)_')
+_VALID_TEST_NAME = re.compile(r'^test_(success|failure)(_|$)')
 
 
 def check(path: Path, tree: ast.Module) -> list[Violation]:
@@ -26,7 +26,7 @@ def check(path: Path, tree: ast.Module) -> list[Violation]:
                 path=str(path),
                 line=node.lineno,
                 code=CODE,
-                message=f"test function '{node.name}' must start with test_success_ or test_failure_",
+                message=f"test function '{node.name}' must be named test_success or test_success_..., or test_failure or test_failure_...",
             )
         )
     return violations

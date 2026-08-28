@@ -9,7 +9,7 @@ Add to your project's `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/khabbazan/CinemaTicket-lint
-    rev: v0.5.0
+    rev: v0.6.0
     hooks:
       - id: cinematicket-lint
 ```
@@ -35,12 +35,12 @@ exclude = ["migrations", "lint_eval_tmp"]
 | Code | Checks for |
 |---|---|
 | `CT01` | Backslash line continuation outside brackets (e.g. `total = 1 + \`). Complements ruff's `E502`, which only flags a *redundant* backslash inside an already-open bracket. |
-| `CT02` | A local variable assigned without a type annotation, where the right-hand side is neither a class constructor call (`SomeClass(...)`, PascalCase target) nor a literal data-type initialization (`()`, `[]`, `''`, `""`, `{}`, a set literal, an f-string, or a number/bool/`None` constant). |
+| `CT02` | A local variable assigned without a type annotation, where the right-hand side is neither a class constructor call (`SomeClass(...)`, PascalCase target) nor a literal data-type initialization (`()`, `[]`, `''`, `""`, `{}`, a set literal, an f-string, or a number/bool/`None` constant), and the name hasn't already been annotated earlier in the same function (as a parameter, or via a prior `name: T = ...`) — checked anywhere in the function, including inside `if`/`for`/`while`/`try`/`with` blocks, but not inside a nested function/class. |
 | `CT03` | A pydantic `BaseModel` / `@dataclass` field typed `Optional[X]` or `X \| None` with no default value. |
 | `CT04` | A `drf_yasg` `openapi.Schema(...)` / `openapi.Parameter(...)` call assigned to a variable with `RESPONSE` (case-insensitive) in its name, missing `example=`. Request/other schemas are not required to have one. |
 | `CT05` | Any `openapi.Schema(...)` / `openapi.Parameter(...)` call, regardless of variable name, missing `description=`. |
 | `CT06` | Same call, `description=` present but doesn't end with a period. |
-| `CT07` | In `test_*.py` files, a `def test_*` function whose name doesn't match `test_(success\|failure)_`. |
+| `CT07` | In `test_*.py` files, a `def test_*` function whose name isn't `test_success`, `test_failure`, or one of those with a `_...` suffix. |
 
 ## Suppressing a check
 
@@ -60,8 +60,9 @@ Or on the file's first line to suppress that check for the whole file:
 ## Local development
 
 ```bash
-pip install -e .
+pip install -e ".[dev]"
 cinematicket-lint path/to/file.py
+pytest
 ```
 
 ## License
