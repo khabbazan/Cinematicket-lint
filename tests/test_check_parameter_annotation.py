@@ -38,14 +38,14 @@ def test_exempts_self_and_cls():
     assert flagged == []
 
 
-def test_flags_unannotated_star_args_and_kwargs():
+def test_exempts_star_args_and_kwargs():
     flagged = _check(
         """
         def foo(*args, **kwargs):
             return args, kwargs
         """
     )
-    assert flagged == ['args', 'kwargs']
+    assert flagged == []
 
 
 def test_exempts_fully_annotated_parameters():

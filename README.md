@@ -41,7 +41,7 @@ exclude = ["migrations", "lint_eval_tmp"]
 | `CT05` | Any `openapi.Schema(...)` / `openapi.Parameter(...)` call, regardless of variable name, missing `description=`. |
 | `CT06` | Same call, `description=` present but doesn't end with a period. |
 | `CT07` | In `test_*.py` files, a `def test_*` function whose name isn't `test_success`, `test_failure`, or one of those with a `_...` suffix. |
-| `CT08` | A function/method parameter (positional, keyword-only, `*args`, `**kwargs`) with no type annotation. `self` and `cls` are exempt. |
+| `CT08` | A function/method parameter (positional, keyword-only) with no type annotation. `self`, `cls`, `*args`, and `**kwargs` are exempt. |
 | `CT09` | A function/method with no return-type annotation. Exempt: `test_success[_...]` / `test_failure[_...]` functions, and dunder methods (`__init__`, `__str__`, ...). |
 
 ## Suppressing a check

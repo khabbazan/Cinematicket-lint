@@ -1,8 +1,10 @@
 """Doc rule 3.3: annotate every function/method parameter.
 
 `self` and `cls` are exempt (their type is the enclosing class, which
-adds nothing when spelled out). Every other parameter — positional,
-keyword-only, `*args`, `**kwargs` — must carry a type annotation.
+adds nothing when spelled out). `*args` and `**kwargs` are exempt too
+(their element type isn't expressible without generics that add more
+noise than value at call sites). Every other parameter — positional,
+keyword-only — must carry a type annotation.
 """
 
 import ast
@@ -32,10 +34,6 @@ def _check_function(path: Path, node: ast.FunctionDef | ast.AsyncFunctionDef) ->
         *node.args.args,
         *node.args.kwonlyargs,
     ]
-    if node.args.vararg is not None:
-        all_params.append(node.args.vararg)
-    if node.args.kwarg is not None:
-        all_params.append(node.args.kwarg)
 
     for parameter in all_params:
         if parameter.arg in _EXEMPT_PARAMETER_NAMES:
