@@ -6,7 +6,8 @@ self-evident from syntax alone:
      (PascalCase), matching the project's class-naming-style=PascalCase
      convention already enforced by pylint.
   2. a literal data-type initialization: (), [], '', "", {}, a set
-     literal, an f-string, or a number/bool/None constant.
+     literal, an f-string, or a number/bool/None constant (including a
+     signed number such as -1).
 
 Also exempt: a name already annotated earlier in the same function scope
 (as a parameter, or via a prior `name: T = ...` assignment anywhere in
@@ -105,7 +106,18 @@ def _check_assignment(path: Path, statement: ast.stmt, annotated_names: set[str]
 
 
 def _is_exempt(value: ast.expr) -> bool:
-    return _looks_like_constructor_call(value) or isinstance(value, _LITERAL_NODE_TYPES)
+    return _looks_like_constructor_call(value) or _is_literal(value)
+
+
+def _is_literal(value: ast.expr) -> bool:
+    if isinstance(value, _LITERAL_NODE_TYPES):
+        return True
+    return (
+        isinstance(value, ast.UnaryOp)
+        and isinstance(value.op, (ast.USub, ast.UAdd))
+        and isinstance(value.operand, ast.Constant)
+        and isinstance(value.operand.value, (int, float, complex))
+    )
 
 
 def _looks_like_constructor_call(value: ast.expr) -> bool:

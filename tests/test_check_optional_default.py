@@ -41,7 +41,9 @@ def test_exempts_a_required_field():
 
 def test_does_not_flag_dataclasses():
     """"""
-    source = '@dataclass\nclass Foo:\n    name: str | None\n\n@dataclasses.dataclass\nclass Bar:\n    name: Optional[str]\n'
+    source = (
+        '@dataclass\nclass Foo:\n    name: str | None\n\n@dataclasses.dataclass\nclass Bar:\n    name: Optional[str]\n'
+    )
     assert _check(source) == []
 
 

@@ -1,6 +1,6 @@
 - id: cinematicket-lint
-  name: CinemaTicket custom lint (CT01-CT07)
-  description: Checks code-style rules ruff and pylint cannot express (see README for the CT01-CT07 list)
+  name: CinemaTicket custom lint (CT01-CT18)
+  description: Checks code-style rules ruff and pylint cannot express (see README for the CT01-CT18 list)
   entry: cinematicket-lint
   language: python
   types: [python]
