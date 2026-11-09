@@ -1,7 +1,7 @@
 """Doc rule 3.4: optional fields must have a default value.
 
-Scoped to pydantic BaseModel subclasses and @dataclass-decorated classes,
-checking Optional[X] / X | None annotated fields for a missing default.
+Scoped to pydantic BaseModel subclasses, checking Optional[X] / X | None
+annotated fields for a missing default.
 """
 
 import ast
@@ -35,13 +35,9 @@ def check(path: Path, tree: ast.Module) -> list[Violation]:
 
 
 def _is_model_class(class_node: ast.ClassDef) -> bool:
-    for decorator in class_node.decorator_list:
-        decorator_name = decorator.id if isinstance(decorator, ast.Name) else getattr(decorator, 'attr', '')
-        if decorator_name == 'dataclass':
-            return True
     for base in class_node.bases:
         base_name = base.id if isinstance(base, ast.Name) else getattr(base, 'attr', '')
-        if base_name in ('BaseModel', 'Model'):
+        if base_name == 'BaseModel':
             return True
     return False
 

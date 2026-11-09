@@ -1,6 +1,6 @@
 [project]
 name = "cinematicket-lint"
-version = "0.8.0"
+version = "0.8.1"
 description = "Pre-commit checks (CT01-CT18) for code-style rules ruff and pylint cannot express"
 readme = "README.md"
 requires-python = ">=3.11"
