@@ -2,5 +2,5 @@
   name: CinemaTicket custom lint (CT01-CT18)
   description: Checks code-style rules ruff and pylint cannot express (see README for the CT01-CT18 list)
   entry: cinematicket-lint
-  language: python
+  language: rust
   types: [python]

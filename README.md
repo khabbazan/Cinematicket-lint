@@ -108,10 +108,11 @@ Or on the file's first line to suppress that check for the whole file:
 
 ## Local development
 
+The hook is a Rust binary (pre-commit builds it with `cargo`, so a Rust toolchain must be installed).
+
 ```bash
-pip install -e ".[dev]"
-cinematicket-lint path/to/file.py
-pytest
+cargo build --release
+./target/release/cinematicket-lint path/to/file.py
 ```
 
 ## License
