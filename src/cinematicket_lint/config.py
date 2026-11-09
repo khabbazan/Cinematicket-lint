@@ -21,6 +21,16 @@ def load_include_dirs(start: Path) -> list[str]:
     return _load_config(start).get('include', [])
 
 
+def load_config(start: Path) -> dict:
+    """"""
+    return _load_config(start)
+
+
+def resolve_options(defaults: dict, options: dict | None) -> dict:
+    """Merge a rule's `[tool.cinematicket_lint.<rule>]` table over its built-in defaults."""
+    return {**defaults, **(options or {})}
+
+
 def discover_files(start: Path) -> list[Path]:
     config_path = _find_pyproject_toml(start)
     root = config_path.parent if config_path is not None else start
